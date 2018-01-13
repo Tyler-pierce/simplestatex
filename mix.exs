@@ -4,7 +4,7 @@ defmodule SimpleStatEx.Mixfile do
   def project do
     [
       app: :simplestatex,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps(),
@@ -39,7 +39,7 @@ defmodule SimpleStatEx.Mixfile do
     [
       licenses: ["MIT"],
       maintainers: ["Tyler Pierce"],
-      files: ["lib", "mix.exs", "README.md", "test"],
+      files: ["lib", "mix.exs", "README.md", "test", "config"],
       links: %{"GitHub" => "https://github.com/Tyler-pierce/simplestatex"},
       source_url: "https://github.com/Tyler-pierce/simplestatex"
     ]

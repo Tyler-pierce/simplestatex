@@ -56,6 +56,14 @@ Add Simple Stats Repo to your application in `lib/myapp/application.ex`:
   ]
 ```
 
+Add a Repo module for simple stat to your project somewhere (lib/myapp/ssx_repo.ex):
+
+```elixir
+defmodule SimpleStatEx.Repo do
+  use Ecto.Repo, otp_app: :simplestatex
+end
+```
+
 And run the migration to get the stat table:
 
 ```elixir
