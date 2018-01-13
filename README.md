@@ -75,7 +75,7 @@ To add and query stats from memory you will need Simple Stats supervisor added t
     ...
   ]
 ```
-** Hint ** You needent set up any kind of repo and can choose to only to keep stats in memory
+**Hint** You needent set up any kind of repo and can choose to only keep stats in memory
 
 
 ## Usage
@@ -96,7 +96,7 @@ SSX.stat("about page visit", :daily) |> SSX.save()
 {:ok, %SimpleStatEx.SimpleStat{ ... }}
 ```
 
-The allowed atoms for time periods are in the documentation.  
+The currently allowed atoms for time periods are :minute, :second, :hourly, :daily, :weekly, :monthly, :yearly.
 
 You can also save to memory easily by making use of the piping convenience function (make sure to do optional setup):
 
