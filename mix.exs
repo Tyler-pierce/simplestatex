@@ -23,11 +23,11 @@ defmodule SimpleStatEx.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:phoenix_ecto, "> 3.0"},
-      {:timex, "> 3.1"},
-      {:timex_ecto, "> 3.1"},
+      {:phoenix_ecto, ">= 3.0"},
+      {:timex, ">= 3.1"},
+      {:timex_ecto, ">= 3.1"},
 
-      {:ex_doc, "~> 0.16", only: :dev, runtime: false}
+      {:ex_doc, ">= 0.16", only: :dev, runtime: false}
     ]
   end
 
