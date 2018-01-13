@@ -45,6 +45,25 @@ defmodule SimpleStatEx.Server.SimpleStatSet do
     result
   end
 
+  @doc """
+  Reset the stat bucket
+  """
+  def reset(category_bucket) do
+    GenServer.cast(category_bucket, :reset)
+  end
+
+  def get_stats(category_bucket, period \\ :all) do
+    result = GenServer.call(category_bucket, {:retrieve_all, period})
+
+    {:ok, result}
+  end
+
+  def get_stats!(category_bucket) do
+    {:ok, result} = get_stats(category_bucket)
+
+    result
+  end
+
   # Server
   ###########################
 
@@ -62,6 +81,21 @@ defmodule SimpleStatEx.Server.SimpleStatSet do
     new_stat_period_list = update_stat_period_list(stat_period_list, simple_stat)
 
     {:noreply, %{updated_category_state | period => new_stat_period_list}}
+  end
+
+  def handle_cast(:reset, _) do
+    {:noreply, %{}}
+  end
+
+  def handle_call({:retrieve_all, period}, category_state) do
+    stats = case period do
+      :all ->
+        Enum.flat_map(category_state, fn {_, period_stats} -> period_stats end)
+      period_queried ->
+        Map.get(category_state, period_queried)
+    end
+
+    {:reply, stats, category_state}
   end
 
   def handle_call({:query, %SimpleStat{period: period}, %SimpleStatQuery{limit: limit, offset: offset}}, _from, category_state) do

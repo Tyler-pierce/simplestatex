@@ -5,8 +5,8 @@ defmodule SimpleStatEx do
   and time window and can be queried conveniently.  SimpleStatEx provides the recommended interface to your stats.
   """
 
-  alias SimpleStatEx.{SimpleStat, SimpleStatHolder, SimpleStatQuery, StatSupervisor}
-  alias SimpleStatEx.Util.HandleTime
+  alias SimpleStatEx.{SimpleStat, SimpleStatHolder, SimpleStatQuery}
+  alias SimpleStatEx.Util.{HandleTime, DataAccess}
   alias SimpleStatEx.Query.Stat
 
   @doc """
@@ -47,13 +47,13 @@ defmodule SimpleStatEx do
     iex> SimpleStatEx.query("mongol visit") |> SimpleStatEx.memory() |> SimpleStatEx.get()
   """
   def memory({:ok, %SimpleStat{} = simple_stat}) do
-    pid = lookup_bucket(simple_stat)
+    pid = DataAccess.lookup_bucket(simple_stat)
 
     {:ok, %SimpleStatHolder{simple_stat: simple_stat, category_bucket_pid: pid}}
   end
 
   def memory({:ok, %SimpleStat{} = simple_stat, %SimpleStatQuery{} = simple_stat_query}) do
-    pid = lookup_bucket(simple_stat)
+    pid = DataAccess.lookup_bucket(simple_stat)
 
     {:ok, %SimpleStatHolder{simple_stat: simple_stat, category_bucket_pid: pid}, simple_stat_query}
   end
@@ -114,7 +114,7 @@ defmodule SimpleStatEx do
     iex> SimpleStatEx.query("index visit") |> SimpleStatEx.limit(50) |> SimpleStatEx.get()
 
   """
-  def limit({:ok, %SimpleStat{} = simple_stat, %SimpleStatQuery{} = simple_stat_query}, limit) do
+  def limit({:ok, simple_stat, %SimpleStatQuery{} = simple_stat_query}, limit) do
     {:ok, simple_stat, %{simple_stat_query | limit: limit}}
   end
 
@@ -130,7 +130,7 @@ defmodule SimpleStatEx do
     # Get 1 day stats from 50 days ago
     iex> SimpleStatEx.query("index visit") |> SimpleStatEx.offset(50) |> Simple StatEx.get()
   """
-  def offset({:ok, %SimpleStat{} = simple_stat, %SimpleStatQuery{} = simple_stat_query}, offset) do
+  def offset({:ok, simple_stat, %SimpleStatQuery{} = simple_stat_query}, offset) do
     {:ok, simple_stat, %{simple_stat_query | offset: offset}}
   end
 
@@ -192,43 +192,5 @@ defmodule SimpleStatEx do
     [result|_] = get!(stat_query_tuple)
 
     result
-  end
-
-  @doc """
-  Retrieve the configured Repo, or the internal Repo if the application chose to grant SimpleStat 
-  it's own repository to work from.
-  """
-  def repo() do
-    case Application.get_env(:simplestatex, :repo) do
-      nil ->
-        SimpleStatEx.Repo
-      repo ->
-        repo
-    end
-  end
-
-  @doc """
-  Lookup the bucket process id for an in memory operation.  Creates the bucket if it does not exist
-  """
-  def lookup_bucket(%SimpleStat{} = simple_stat) do
-    case Process.whereis(get_stat_process_name(simple_stat)) do
-      nil ->
-        create_stat_bucket(simple_stat)
-      pid ->
-        pid
-    end
-  end
-
-  defp get_stat_process_name(%SimpleStat{category: category}) do
-    String.to_atom("stat_proc_" <> category)
-  end
-
-  defp create_stat_bucket(%SimpleStat{} = simple_stat) do
-    case StatSupervisor.start_child(get_stat_process_name(simple_stat)) do
-      {:ok, pid} ->
-        pid
-      _ ->
-        Process.whereis(get_stat_process_name(simple_stat))
-    end
   end
 end

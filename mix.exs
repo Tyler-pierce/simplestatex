@@ -8,6 +8,8 @@ defmodule SimpleStatEx.Mixfile do
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps()
+      description: description(),
+      package: package()
     ]
   end
 
@@ -23,7 +25,23 @@ defmodule SimpleStatEx.Mixfile do
     [
       {:phoenix_ecto, "~> 3.0"},
       {:timex, "~> 3.1.15", override: true},
-      {:timex_ecto, "~> 3.1.1", override: true}
+      {:timex_ecto, "~> 3.1.1", override: true},
+
+      {:ex_doc, "~> 0.16", only: :dev, runtime: false}
+    ]
+  end
+
+  defp description() do
+    "A Statistic Counter designed for simplicity and ease of use. Stats are rolled into time periods of your choice."
+  end
+
+  defp package() do
+    [
+      licenses: ["MIT"],
+      maintainers: ["Tyler Pierce"],
+      files: ["lib", "mix.exs", "README.md", "test"],
+      links: %{"GitHub" => "https://github.com/Tyler-pierce/simplestatex"},
+      source_url: "https://github.com/Tyler-pierce/simplestatex"
     ]
   end
 end

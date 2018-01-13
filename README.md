@@ -1,13 +1,12 @@
 # SimpleStatEx
 
-SimpleStatEx allows your elixir project to roll up stat counters in a simple and fast manner.  The statistics can be rolled up into time windows of your choice (see usage for more detail).  This library is tested for Phoenix Framework 1.3.
+SimpleStatEx allows your elixir project to keep simple statistic counters.  The statistics can be rolled up into time windows of your choice (see usage for more detail).  This library is tested for Phoenix Framework 1.3.
 
-Your statistics can be stored in your applications data store using the migration and model available, or held in a process via GenServer.  SimpleStatEx also supports mass insertion, holding the state of your stats until you yourself save it manually, or using a cron service such as Quantum (see Quantum instruction below).
+Easy install and simplicity are the top priorities of this library.  Simple Stat is compatible with Ecto, long term storage, and/or in memory storage of your statistics.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `simplestatex` to your list of dependencies in `mix.exs`:
+Add `simplestatex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -64,19 +63,85 @@ And run the migration to get the stat table:
 mix ecto.migrate -r SimpleStatEx.Repo
 ```
 
-## Usage
+### Optional Setup
 
-### Persistant Storage
-
-The normal use case will be to hold your stats in a database such as postgres.  Here are some examples of persisted statistics:
+To add and query stats from memory you will need Simple Stats supervisor added to your application.ex:
 
 ```elixir
+  ...
+  children = [
+    ...
+    supervisor(SimpleStatEx.StatSupervisor, []),
+    ...
+  ]
+```
+** Hint ** You needent set up any kind of repo and can choose to only to keep stats in memory
 
+
+## Usage
+
+### Recording Stats
+
+Here are some examples of recording statistics:
+
+```elixir
+alias SimpleStatEx, as: SSX
+
+SSX.stat("index visit", :hourly) |> SSX.save()
+
+{:ok, %SimpleStatEx.SimpleStat{ ... }}
+
+SSX.stat("about page visit", :daily) |> SSX.save()
+
+{:ok, %SimpleStatEx.SimpleStat{ ... }}
+```
+
+The allowed atoms for time periods are in the documentation.  
+
+You can also save to memory easily by making use of the piping convenience function (make sure to do optional setup):
+
+```elixir
+SS.stat("mongol visit", :minute) |> SS.memory() |> SS.save()
+
+{:ok,
+ %SimpleStatEx.SimpleStat{ ... }}
+```
+
+That will save to state in a genserver.  The only strategy currently available for concurrency is 1 process per topic though
+of course you can implement or contribute additional genserver implementations.
+
+### Querying Stats
+
+Ecto can be used to make custom queries per usual but Simple Stat includes conveniences and recommended ways to query:
+
+```elixir
+SSX.query("index visit", :daily) |> SSX.get()
+
+{:ok,
+ [%{category: "index visit", count: 2, period: "daily",
+    time: ~N[2018-01-13 00:00:00.000000], updated_at: ~N[2018-01-13 03:34:50.310691]}]}
+
+SSX.query("index visit", :minute) |> SSX.limit(2) |> SSX.get()
+
+{:ok,
+ [%{category: "index visit", count: 5, period: "minute",
+    time: ~N[2018-01-13 10:27:00.000000], updated_at: ~N[2018-01-13 03:34:50.310691]},
+  %{category: "index visit", count: 15, period: "minute",
+    time: ~N[2018-01-13 10:27:01.000000], updated_at: ~N[2018-01-13 03:34:50.310691]}]}
+
+SSX.query("index visit temp", :daily) |> SSX.limit(10) |> SSX.offset(1) |> SSX.memory() |> SSX.get()
+
+{:ok, [ ... ]}
 ```
 
 ## Definitions
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/simplestatex](https://hexdocs.pm/simplestatex).
+* **period** a slice of time such as an hour or minute or year
+* **category** a string by which stats are grouped and separated
+* **stat** a single stat by category and period (category: "index" period: "hourly", count: 6901)
 
+## Coming up next
+
+* Mass insert (for dumping stats from memory to disk periodically)
+* Additional genserver strategies (in case of high volumn needs for a single category)
+* Quantum support for periodic stat roundups
