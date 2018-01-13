@@ -17,7 +17,23 @@ def deps do
 end
 ```
 
-If wanting persisted stats, either copy your existing repo config in your application as simple stat ex's, or use a different repo,
+Copy the migration file into your application:
+
+```elixir
+mix simple_stat_ex.copy_migration
+```
+
+and configure your repo for simple stat to use in `config.exs`:
+
+```elixir
+config :simplestatex,
+  repo: MyApp.Repo
+```
+
+## Installation Option #2
+
+You can also set simple stat up with it's own Repo to work alongside your own.
+
 in `dev.exs`:
 
 ```elixir
@@ -48,19 +64,6 @@ And run the migration to get the stat table:
 mix ecto.migrate -r SimpleStatEx.Repo
 ```
 
-alternatively and easier, you can copy the migration file to your own application:
-
-```elixir
-mix simple_stat_ex.copy_migration
-```
-
-and configure your repo for simple stat to use in `config.exs`:
-
-```elixir
-config :simplestatex,
-  repo: MyApp.Repo
-```
-
 ## Usage
 
 ### Persistant Storage
@@ -70,6 +73,8 @@ The normal use case will be to hold your stats in a database such as postgres.  
 ```elixir
 
 ```
+
+## Definitions
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
