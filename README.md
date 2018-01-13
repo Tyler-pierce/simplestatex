@@ -4,7 +4,7 @@ SimpleStatEx allows your elixir project to keep simple statistic counters.  The 
 
 Easy install and simplicity are the top priorities of this library.  Simple Stat is compatible with Ecto, long term storage, and/or in memory storage of your statistics.
 
-[Full documentation here.](https://hexdocs.pm/simplestatex/SimpleStatEx.html)
+[Full documentation here.](https://hexdocs.pm/simplestatex/SimpleStatEx.html) or [jump straight to usage examples](https://github.com/Tyler-pierce/simplestatex#usage).
 
 ## Installation
 
