@@ -1,4 +1,5 @@
 defmodule SimpleStatEx.Repo.Migrations.CreateSimplestats do
+  @moduledoc false
   use Ecto.Migration
 
   def change do

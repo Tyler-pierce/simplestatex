@@ -23,9 +23,9 @@ defmodule SimpleStatEx.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto, ">= 2.0.0"},
+      {:ecto, ">= 2.2.0"},
       {:timex, ">= 3.1.0"},
-      {:timex_ecto, ">= 3.1.0"},
+      {:timex_ecto, "~> 3.2"},
 
       {:ex_doc, "~> 0.16", only: :dev, runtime: false}
     ]
