@@ -42,6 +42,7 @@ defimpl SimpleStatEx.Query.Stat, for: SimpleStatEx.SimpleStat do
       |> Query.where(category: ^category, period: ^period)
       |> Query.limit(^limit)
       |> Query.offset(^offset)
+      |> Query.order_by([s], desc: s.time)
       |> DataAccess.repo().all() do
       {:error, reason} ->
         {:error, reason}
@@ -54,6 +55,7 @@ defimpl SimpleStatEx.Query.Stat, for: SimpleStatEx.SimpleStat do
     case SimpleStat
       |> Query.select([s], %{category: s.category, period: s.period, count: s.count, time: s.time, updated_at: s.updated_at})
       |> Query.where(category: ^category)
+      |> Query.order_by([s], desc: s.time)
       |> DataAccess.repo().all() do
       {:error, reason} ->
         {:error, reason}
