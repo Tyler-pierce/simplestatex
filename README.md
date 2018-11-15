@@ -13,7 +13,7 @@ Add `simplestatex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:simplestatex, "~> 0.1.4"}
+    {:simplestatex, "~> 0.1.5"}
   ]
 end
 ```
