@@ -4,7 +4,7 @@ defmodule SimpleStatEx.Mixfile do
   def project do
     [
       app: :simplestatex,
-      version: "0.1.6",
+      version: "0.2.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps(),
@@ -23,7 +23,7 @@ defmodule SimpleStatEx.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto, ">= 2.2.0"},
+      {:ecto, "~> 3.1"},
       {:timex, ">= 3.1.0"},
 
       {:ex_doc, "~> 0.19", only: :dev, runtime: false}

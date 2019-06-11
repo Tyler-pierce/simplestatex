@@ -8,7 +8,7 @@ defmodule SimpleStatEx.SimpleStat do
     field :category, :string
     field :count, :integer, default: 1
     field :period, :string, default: "daily"
-    field :time, :naive_datetime
+    field :time, :utc_datetime
 
     timestamps()
   end

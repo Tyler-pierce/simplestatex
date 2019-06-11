@@ -8,12 +8,12 @@ Easy install and simplicity are the top priorities of this library.  Simple Stat
 
 ## Installation
 
-Add `simplestatex` to your list of dependencies in `mix.exs`:
+Add `simplestatex` to your list of dependencies in `mix.exs` (if not on ecto 3, use v0.1:
 
 ```elixir
 def deps do
   [
-    {:simplestatex, "~> 0.1.5"}
+    {:simplestatex, "~> 0.2"}
   ]
 end
 ```
