@@ -14,9 +14,10 @@ defmodule SimpleStatEx.SimpleStat do
   end
 
   @doc false
-  def changeset(%SimpleStat{} = simple_stats, attrs) do
+  def changeset(%SimpleStat{time: time} = simple_stats, attrs) do
     simple_stats
     |> cast(attrs, [:category, :period, :time, :count])
+    |> Map.put(:time, DateTime.truncate(time, :second))
     |> validate_required([:category, :period, :time, :count])
   end
 end
