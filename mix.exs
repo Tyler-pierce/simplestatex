@@ -5,7 +5,7 @@ defmodule SimpleStatEx.Mixfile do
     [
       app: :simplestatex,
       version: "0.2.3",
-      elixir: "~> 1.5",
+      elixir: "~> 1.7",
       start_permanent: Mix.env == :prod,
       deps: deps(),
       description: description(),

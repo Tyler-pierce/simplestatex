@@ -30,6 +30,8 @@ defimpl SimpleStatEx.Query.Stat, for: SimpleStatEx.SimpleStat do
 
     
   def insert(%SimpleStat{category: category, time: time, count: count} = simple_stat) do
+    time = DateTime.truncate(time, :second)
+
     simple_stat |> DataAccess.repo().insert(
       conflict_target: [:category, :time],
       on_conflict: SimpleStat |> Query.where(category: ^category, time: ^time) |> Query.update([inc: [count: ^count]])
