@@ -4,8 +4,8 @@ defmodule SimpleStatEx.Mixfile do
   def project do
     [
       app: :simplestatex,
-      version: "0.2.3",
-      elixir: "~> 1.7",
+      version: "0.3.0",
+      elixir: "~> 1.9",
       start_permanent: Mix.env == :prod,
       deps: deps(),
       description: description(),
