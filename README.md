@@ -6,6 +6,7 @@ Easy install and simplicity are the top priorities of this library.  Simple Stat
 
 [Full documentation here.](https://hexdocs.pm/simplestatex/SimpleStatEx.html) or [jump straight to usage examples](https://github.com/Tyler-pierce/simplestatex#usage).
 
+test
 ## Installation
 
 Add `simplestatex` to your list of dependencies in `mix.exs` (if not on ecto 3, use v0.1:
