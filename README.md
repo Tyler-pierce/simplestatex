@@ -1,5 +1,6 @@
 # SimpleStatEx
 
+Quick Edit
 SimpleStatEx allows your elixir project to keep simple statistic counters.  The statistics can be rolled up into time windows of your choice (see usage for more detail).  This library is tested for Phoenix Framework 1.3.
 
 Easy install and simplicity are the top priorities of this library.  Simple Stat is compatible with Ecto, long term storage, and/or in memory storage of your statistics.
